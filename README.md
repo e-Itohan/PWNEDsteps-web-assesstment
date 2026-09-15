@@ -63,7 +63,7 @@ Session cookie contained unsanitized user ID. Decoded and manipulated via Burp S
 # Hash regenerated, session hijacked
 ```
 
-***\<p align="center"\>\<img src="figures/02-cookie-manipulation.png" width="600"/\>\</p\>**
+\<p align="center"\>\<img src="figures/02-cookie-manipulation.png" width="600"/\>\</p\>
 
 **Employee Handbook — Credential Stuffing:**
 
@@ -102,7 +102,7 @@ UNION SELECT 1,schema\_name,3,4,5,6 FROM information\_schema.schemata
 UNION SELECT 1,Email,3,Password,Admin,6 FROM Users
 ```
 
-**\<p align="center"\>\<img src="figures/03-sqli-extraction.png" width="600"/\>\</p\>**
+\<p align="center"\>\<img src="figures/03-sqli-extraction.png" width="600"/\>\</p\>
 
 **Result:** All 12 employee accounts extracted including admin credentials (`eliasv@cyberstepsvuln.com`).
 
@@ -118,7 +118,7 @@ UNION SELECT 1,Email,3,Password,Admin,6 FROM Users
 ```
 Decoded `wp-config.php` revealed database credentials, enabling further exploitation.
 
-**\<p align="center"\>\<img src="figures/04-lfi-traversal.png" width="600"/\>\</p\>**
+\<p align="center"\>\<img src="figures/04-lfi-traversal.png" width="600"/\>\</p\>
 
 ### 5. Remote Code Execution — The Final Chain
 
@@ -134,7 +134,7 @@ Decoded `wp-config.php` revealed database credentials, enabling further exploita
 
 `&module=upload&loadfile=../../../../../../var/www/html/\[hash\]/monkey.txt`
 
-**\<p align="center"\>\<img src="figures/05-rce-shell.png" width="600"/\>\</p\>**
+\<p align="center"\>\<img src="figures/05-rce-shell.png" width="600"/\>\</p\>
 
 **Result:** Reverse shell established, full server access achieved. Post-exploitation revealed MySQL credentials in `~alibaba/.profile`.
 
