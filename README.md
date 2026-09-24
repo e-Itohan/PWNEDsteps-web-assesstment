@@ -208,6 +208,47 @@ Post-remediation checks to confirm fixes:
 
 **`Burp Suite` · `WPScan` · `Gobuster` · `FFuF` · `Hydra` · `Netcat` · `Python` · `Bash`**
 
+### 🔧 Custom Tools
+
+#### Username Generator (`UsernameGenerator.py`)
+
+Generates 52 username variations per employee from leaked name lists (common in information disclosure phases).
+
+**Usage:**
+```bash
+python3 username_generator.py [input_file] [output_file]
+python3 username_generator.py employees.txt usernames.txt
+```
+Input format: One name pair per line, In this case it will be used only for the name's author found:
+
+```
+Mati Hautameki
+```
+
+Output: 
+
+<p align="center"\>\<img src="figures/08-usernames-sample.png" width="600"/></p>
+
+Context: Used in PWNEDsteps lab to generate targeted wordlists for /EmployeeHandbook.php brute-force attacks via ffuf.
+
+
+---
+
+## File Permissions & Commit
+
+```bash
+# Make executable (optional but professional)
+chmod +x username_generator.py
+
+# Commit message
+git add scripts/UsernameGenerator.py
+git commit -m "Add UsernameGenerator.py: corporate pattern generator for credential stuffing PoCs
+
+- Generates 52 username variations (lowercase + uppercase) per name pair
+- Includes input/output validation and error handling
+- Documented for ethical use in authorized pen-test engagements only"
+```
+
 ## 📈 Business Impact
 
 If exploited by a malicious actor in production:
